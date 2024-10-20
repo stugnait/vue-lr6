@@ -27,7 +27,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-const today = new Date().toISOString().split('T')[0];
 const form = ref({
   name: '',
   dob: '',
@@ -38,11 +37,8 @@ const form = ref({
 const emit = defineEmits(['addParticipant']);
 
 function handleSubmit() {
-  // Валідація полів (напр. email і телефон через регекс)
   if (validateEmail(form.value.email) && validatePhone(form.value.phone)) {
-    // Викидає подію додавання учасника
     emit('addParticipant', { ...form.value });
-    // Очистити форму після додавання
     form.value = { name: '', dob: '', email: '', phone: '' };
   } else {
     console.error('Please enter valid email and phone number');

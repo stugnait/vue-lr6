@@ -9,6 +9,8 @@
         <th>Date of Birth</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
       </thead>
       <tbody>
@@ -18,6 +20,12 @@
         <td>{{ participant.dob }}</td>
         <td>{{ participant.email }}</td>
         <td>{{ participant.phone }}</td>
+        <td>
+          <ButtonComponent @click="$emit('edit', participant)">Edit</ButtonComponent>
+        </td>
+        <td>
+          <ButtonComponent @click="$emit('delete', participant)">Delete</ButtonComponent>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -25,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
+import ButtonComponent from "@/components/ButtonComponent.vue";
 
 const props = defineProps({
   participants: {

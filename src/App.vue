@@ -9,16 +9,31 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue';
-import RegisterForm from './components/RegisterForm.vue';
-import ParticipantsTable from './components/ParticipantsTable.vue';
-import WinnersList from './components/WinnersList.vue';
+<script lang="ts" setup>import { ref, onMounted, watch } from 'vue';
+import WinnersList from "@/components/WinnersList.vue";
+import RegisterForm from "@/components/RegisterForm.vue";
+import ParticipantsTable from "@/components/ParticipantsTable.vue";
 
 const participants = ref([]);
 const winners = ref([]);
 
+onMounted(() => {
+  const storedParticipants = localStorage.getItem('participants');
+  if (storedParticipants) {
+    participants.value = JSON.parse(storedParticipants);
+  }
+});
+
+watch(participants, (newParticipants) => {
+  localStorage.setItem('participants', JSON.stringify(newParticipants));
+});
+
 function addParticipant(participant) {
+  const exists = participants.value.some(p => p.email === participant.email);
+  if (exists) {
+    alert('Participant with this email already exists');
+    return;
+  }
   participants.value.push(participant);
 }
 
@@ -32,4 +47,5 @@ function selectWinner() {
     winners.value.push(winner);
   }
 }
+
 </script>
