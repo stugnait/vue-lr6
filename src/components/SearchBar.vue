@@ -1,16 +1,29 @@
+<script setup lang="ts">
+import {ref} from "vue";
+import VueInput from "@/components/VueInput.vue";
+import VueButton from "@/components/VueButton.vue";
+
+const query = ref<string>('');
+const emit = defineEmits<{
+  (e: 'search', query: string): void
+}>();
+const handleSearch = (query: string) => {
+  emit('search', query);
+};
+</script>
+
 <template>
-  <div class="mb-3">
-    <input type="text" class="form-control" placeholder="Search by name..." v-model="searchTerm" />
+  <div class="d-flex gap-1">
+    <VueInput
+        @update:modelValue="handleSearch"
+        v-model="query"
+        id="search-query"
+        :is-valid="null"
+        placeholder="Search by name..."></VueInput>
+    <VueButton @onClick="() => {handleSearch(''); query = '';}" button-type="button" button-style="secondary">Reset</VueButton>
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
+<style scoped>
 
-const emit = defineEmits(['filter-by-name'])
-const searchTerm = ref('')
-
-watch(searchTerm, (newValue) => {
-  emit('filter-by-name', newValue)
-})
-</script>
+</style>
